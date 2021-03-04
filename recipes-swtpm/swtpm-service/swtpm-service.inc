@@ -6,8 +6,7 @@ inherit systemd
 
 TOOLCHAIN = "clang"
 
-SRC_URI += "file://swtpm_init \
-            file://swtpm.service \
+SRC_URI += "file://swtpm.service \
             file://swtpm_tpm2_startup.service \
             file://swtpm_tpm2_changeauth.service \
             file://LICENSE \
