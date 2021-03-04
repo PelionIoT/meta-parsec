@@ -20,10 +20,6 @@ INITSCRIPT_PARAMS = "defaults"
 SYSTEMD_SERVICE_${PN} = "swtpm.service swtpm_tpm2_startup.service swtpm_tpm2_changeauth.service"
 
 do_install_append () {
-    install -d ${D}${sysconfdir}/swtpm
-    install -m 0600 ${WORKDIR}/swtpm_init ${D}${sysconfdir}/swtpm
-    chmod -R 755 ${D}${sysconfdir}/swtpm
-
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/swtpm.service ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/swtpm_tpm2_startup.service ${D}${systemd_unitdir}/system
