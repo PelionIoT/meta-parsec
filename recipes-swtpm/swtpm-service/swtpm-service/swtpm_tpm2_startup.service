@@ -1,0 +1,12 @@
+[Unit]
+Description=SWTPM tpm2_startup
+PartOf=swtpm.service
+After=swtpm.service
+
+[Service]
+WorkingDirectory=/userdata
+ExecStartPre=/bin/sleep 5
+ExecStart=/bin/tpm2_startup -c -T mssim
+
+[Install]
+WantedBy=swtpm.service

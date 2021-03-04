@@ -1,0 +1,10 @@
+[Unit]
+Description=SWTPM
+Before=parsec.service
+
+[Service]
+WorkingDirectory=/userdata
+ExecStart=/bin/tpm_server
+
+[Install]
+WantedBy=default.target
