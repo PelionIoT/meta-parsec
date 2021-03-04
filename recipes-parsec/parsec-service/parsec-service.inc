@@ -7,7 +7,6 @@ inherit cargo update-rc.d systemd
 TOOLCHAIN = "clang"
 
 SRC_URI += "crate://crates.io/parsec-service/${PV} \
-            file://parsec_init \
             file://config.toml \
            "
 
@@ -26,12 +25,6 @@ SYSTEMD_SERVICE_${PN} = "parsec.service"
 do_install_append () {
     install -d ${D}${sysconfdir}/parsec
     install -m 0600 ${WORKDIR}/config.toml ${D}${sysconfdir}/parsec
-    install -m 0600 ${WORKDIR}/parsec_init ${D}${sysconfdir}/parsec
-    chmod -R 755 ${D}${sysconfdir}/parsec
-
-    install -d ${D}${sysconfdir}/init.d
-    sed -e 's,/usr/bin,${bindir},g' ${WORKDIR}/parsec_init > ${D}${sysconfdir}/init.d/parsec
-    chmod 755 ${D}${sysconfdir}/init.d/parsec
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${S}/systemd-daemon/parsec.service ${D}${systemd_unitdir}/system
