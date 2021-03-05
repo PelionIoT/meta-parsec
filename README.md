@@ -1,7 +1,20 @@
 meta-parsec layer
 ==============
 
-This layer contains recipes for the Parsec service with a software TPM provider.
+This layer contains recipes for the Parsec service with a software TPM provider service.
+
+service starting order
+============
+The software TPM service must be running before the parsec service starts.
+
+The software TPM startup is done in 3 stages:
+1. Start the ```tpm_server``` process
+1. Run ```tpm2_startup```, 5 seconds after the tpm_server has been started. 
+1. Run ```tpm2_changeauth```, 6 seconds after the tpm_server has been started. (Note that this only needs to be run once so subsequent reboots show this as failed.)
+1. These services are configured to run **Before** the parsec service
+
+The parsec service starts 10 seconds after the ```tpm_server``` has been started.
+
 
 Dependencies
 ============
