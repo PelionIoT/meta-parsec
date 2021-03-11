@@ -1,6 +1,7 @@
 meta-parsec layer
 ==============
 
+
 This layer contains recipes for the Parsec service with a software TPM provider service.
 
 Starting the services
@@ -38,7 +39,6 @@ To change this perform the following steps:
 3. Edit the parsec configuration file in ```/etc/parsec/config.toml``` and change the owner_hierarchy_auth line to your new_auth_pass.
 5. Restart the parsec service
 ```sudo systemctl start parsec```
-
 
 Dependencies
 ============
@@ -104,6 +104,7 @@ local.conf:
     IMAGE_INSTALL_append = " libtss2"
     IMAGE_INSTALL_append = " libtss2-tcti-mssim"
     
+
 The Parsec service will be deployed into the image with a config file for the software TPM provider.
 
 
