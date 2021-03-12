@@ -97,13 +97,8 @@ To include the Parsec service into your image add the following into the
 local.conf:
 
     IMAGE_INSTALL_append = " parsec-service-tpm"
+    IMAGE_INSTALL_append = " parsec-tool"
     IMAGE_INSTALL_append = " swtpm-service"
-    IMAGE_INSTALL_append = " ibmswtpm2"
-    IMAGE_INSTALL_append = " tpm2-tools"
-    IMAGE_INSTALL_append = " tpm2-tss"
-    IMAGE_INSTALL_append = " libtss2"
-    IMAGE_INSTALL_append = " libtss2-tcti-mssim"
-    
 
 The Parsec service will be deployed into the image with a config file for the software TPM provider.
 

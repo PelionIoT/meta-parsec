@@ -14,10 +14,6 @@ BPN = "parsec-service"
 
 CARGO_BUILD_FLAGS += "${CARGO_EXTRA_FLAGS}"
 
-# A local file might be defined in build/local.conf
-# The file should be also included into SRC_URI then
-#PARSEC_CONFIG ?= "${S}/e2e_tests/provider_cfg/${PARSEC_PROVIDER}/config.toml"
-
 INITSCRIPT_NAME = "parsec"
 INITSCRIPT_PARAMS = "defaults"
 SYSTEMD_SERVICE_${PN} = "parsec.service"

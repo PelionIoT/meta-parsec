@@ -1,5 +1,4 @@
-SUMMARY = "A language-agnostic API to secure services in a platform-agnostic way"
-HOMEPAGE = "https://github.com/parallaxsecond/parsec"
+SUMMARY = "Creates a software tpm service"
 LICENSE = "Apache-2.0"
 
 inherit systemd
