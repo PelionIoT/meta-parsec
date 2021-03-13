@@ -17,14 +17,6 @@ The software TPM startup is done in 3 stages:
 
 The parsec service starts 10 seconds after the ```tpm_server``` has been started.
 
-Disabling the swtpm_tpm2_changeauth service
-============
-The ```swtpm_tpm2_changeauth``` only needs to be run once to set the initial TPM owner_hierarchy_auth phrase. To prevent this from running on every reboot it should be masked.    
-
-```sudo systemctl mask swtpm_tpm2_changeauth```
-
-If this service is left to run it will be shown as failed.
-
 Password
 ============
 
@@ -34,10 +26,10 @@ This **MUST** be changed as part of the factory setup process.
 To change this perform the following steps:
 1. Stop the parsec service  
 ```sudo systemctl stop parsec```
-2. Change the owner_hierarchy_auth  
+1. Change the owner_hierarchy_auth  
 ```sudo tpm2_changeauth -c -p tpm_pass new_auth_pass```
-3. Edit the parsec configuration file in ```/etc/parsec/config.toml``` and change the owner_hierarchy_auth line to your new_auth_pass.
-5. Restart the parsec service
+1. Edit the parsec configuration file in ```/etc/parsec/config.toml``` and change the owner_hierarchy_auth line to your new_auth_pass.
+1. Restart the parsec service
 ```sudo systemctl start parsec```
 
 Dependencies

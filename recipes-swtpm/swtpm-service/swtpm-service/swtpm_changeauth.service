@@ -1,12 +1,12 @@
 [Unit]
-Description=SWTPM tmp2_changeauth
+Description=SWTPM changeauth
 PartOf=swtpm.service
 After=swtpm_tpm_startup.service
 
 [Service]
 WorkingDirectory=/userdata
 ExecStartPre=/bin/sleep 6
-ExecStart=/bin/tpm2_changeauth -c owner tpm_pass
+ExecStart=-/bin/tpm2_changeauth -c owner tpm_pass
 
 [Install]
 WantedBy=swtpm.service

@@ -1,5 +1,5 @@
 [Unit]
-Description=SWTPM tpm2_startup
+Description=SWTPM startup
 PartOf=swtpm.service
 After=swtpm.service
 
