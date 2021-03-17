@@ -6,7 +6,7 @@ After=swtpm_tpm_startup.service
 [Service]
 WorkingDirectory=/userdata
 ExecStartPre=/bin/sleep 6
-ExecStart=-/bin/tpm2_changeauth -c owner tpm_pass
+ExecStart=-/usr/bin/tpm2_changeauth -c owner tpm_pass
 
 [Install]
 WantedBy=swtpm.service

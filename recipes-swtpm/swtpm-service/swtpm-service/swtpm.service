@@ -3,8 +3,10 @@ Description=SWTPM
 Before=parsec.service
 
 [Service]
+Restart=always
+RestartSec=5s
 WorkingDirectory=/userdata
-ExecStart=/bin/tpm_server
+ExecStart=/usr/bin/tpm_server
 
 [Install]
 WantedBy=default.target
