@@ -3,6 +3,8 @@
 # SWTPM startup script, to be called from the systemd service.
 
 echo "SWTPM Startup"
+mkdir -m 0700 -p /userdata/parsec
+cd /userdata/parsec
 
 if [ ! -f NVChip ]; then
     # No NVChip file found, so treat this as the first run
