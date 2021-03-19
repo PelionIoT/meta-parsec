@@ -6,8 +6,7 @@ inherit systemd
 TOOLCHAIN = "clang"
 
 SRC_URI += "file://swtpm.service \
-            file://swtpm_startup.service \
-            file://swtpm_changeauth.service \
+            file://swtpm.sh \
             file://LICENSE \
            "
 
@@ -15,11 +14,11 @@ BPN = "swtpm-service"
 
 INITSCRIPT_NAME = "swtpm"
 INITSCRIPT_PARAMS = "defaults"
-SYSTEMD_SERVICE_${PN} = "swtpm.service swtpm_startup.service swtpm_changeauth.service"
+SYSTEMD_SERVICE_${PN} = "swtpm.service"
 
 do_install_append () {
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/swtpm.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/swtpm_startup.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/swtpm_changeauth.service ${D}${systemd_unitdir}/system
+    install -d ${D}${bindir}
+    install -m 0755 ${WORKDIR}/swtpm.sh ${D}${bindir}/swtpm.sh
 }

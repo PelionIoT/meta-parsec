@@ -17,6 +17,13 @@ CARGO_BUILD_FLAGS += "${CARGO_EXTRA_FLAGS}"
 INITSCRIPT_NAME = "parsec"
 INITSCRIPT_PARAMS = "defaults"
 SYSTEMD_SERVICE_${PN} = "parsec.service"
+FILES_${PN} = "/usr /usr/bin /etc/parsec/*"
+
+cargo_do_install_append () {
+    install -d ${D}${bindir}
+    install -d -m 0700 ${D}/usr/libexec/parsec
+    mv ${D}${bindir}/parsec ${D}/usr/libexec/parsec/parsec
+}
 
 do_install_append () {
     install -d ${D}${sysconfdir}/parsec
@@ -24,12 +31,10 @@ do_install_append () {
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${S}/systemd-daemon/parsec.service ${D}${systemd_unitdir}/system
-    sed -i -e 's,ExecStart=/usr/libexec/parsec/parsec,ExecStart=/usr/bin/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
+
     sed -i -e 's,WorkingDirectory=/home/parsec/,WorkingDirectory=/userdata,g' ${D}${systemd_unitdir}/system/parsec.service
-    sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=/bin/sleep 10,g' ${D}${systemd_unitdir}/system/parsec.service
-    sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=mkdir -p /tmp/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
+    sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=mkdir -m 0700 -p /run/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
     sed -i -e 's,\[Service\],\[Service\]\nRestartSec=5s,g' ${D}${systemd_unitdir}/system/parsec.service
     sed -i -e 's,\[Service\],\[Service\]\nRestart=always,g' ${D}${systemd_unitdir}/system/parsec.service
 
-    parsec_configure ${D}${sysconfdir}/parsec/config.toml
 }
