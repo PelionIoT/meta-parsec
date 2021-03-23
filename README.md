@@ -1,7 +1,42 @@
 meta-parsec layer
 ==============
 
-This layer contains recipes for the Parsec service with a software TPM provider.
+
+This layer contains recipes for the Parsec service with a software TPM provider service.
+
+Password
+============
+
+By default both the parsec and software TPM are configured to use the password **tpm_pass**  
+This **MUST** be changed as part of the factory setup process.  
+
+To change this perform the following steps:
+1. Stop the parsec service  
+```sudo systemctl stop parsec```
+1. Change the owner_hierarchy_auth  
+```sudo tpm2_changeauth -c -p tpm_pass new_auth_pass```
+1. Edit the parsec configuration file in ```/etc/parsec/config.toml``` and change the owner_hierarchy_auth line to your new_auth_pass.
+1. Restart the parsec service
+```sudo systemctl start parsec```
+
+Stopping and restarting the Services
+============
+The services must be shutdown in the correct order.
+
+1. Stop the parsec service  
+```sudo systemctl stop parsec```
+1. Stop the swtpm service  
+```sudo systemctl stop swtpm```
+
+To restart them:
+
+1. Start the swtpm service  
+```sudo systemctl start swtpm```
+1. Start the parsec service  
+```sudo systemctl start parsec```
+
+
+
 
 Dependencies
 ============
@@ -60,13 +95,9 @@ To include the Parsec service into your image add the following into the
 local.conf:
 
     IMAGE_INSTALL_append = " parsec-service-tpm"
+    IMAGE_INSTALL_append = " parsec-tool"
     IMAGE_INSTALL_append = " swtpm-service"
-    IMAGE_INSTALL_append = " ibmswtpm2"
-    IMAGE_INSTALL_append = " tpm2-tools"
-    IMAGE_INSTALL_append = " tpm2-tss"
-    IMAGE_INSTALL_append = " libtss2"
-    IMAGE_INSTALL_append = " libtss2-tcti-mssim"
-    
-The Parsec service will be deployed into the image with a config file for
-the requested provider.
+
+The Parsec service will be deployed into the image with a config file for the software TPM provider.
+
 

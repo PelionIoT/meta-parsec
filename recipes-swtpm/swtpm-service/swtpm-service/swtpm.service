@@ -1,0 +1,14 @@
+[Unit]
+Description=SWTPM
+Before=parsec.service
+
+[Service]
+Type=forking
+Restart=always
+RestartSec=5s
+WorkingDirectory=/userdata
+ExecStart=/usr/bin/swtpm.sh
+ExecStop=/bin/tpm2_shutdown -T mssim
+
+[Install]
+WantedBy=default.target
