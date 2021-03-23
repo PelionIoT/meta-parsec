@@ -1,4 +1,4 @@
-SUMMARY = "Creates a software tpm service"
+SUMMARY = "Creates a software TPM service"
 LICENSE = "Apache-2.0"
 
 inherit systemd

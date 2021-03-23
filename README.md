@@ -19,6 +19,25 @@ To change this perform the following steps:
 1. Restart the parsec service
 ```sudo systemctl start parsec```
 
+Stopping and restarting the Services
+============
+The services must be shutdown in the correct order.
+
+1. Stop the parsec service  
+```sudo systemctl stop parsec```
+1. Stop the swtpm service  
+```sudo systemctl stop swtpm```
+
+To restart them:
+
+1. Start the swtpm service  
+```sudo systemctl start swtpm```
+1. Start the parsec service  
+```sudo systemctl start parsec```
+
+
+
+
 Dependencies
 ============
 
