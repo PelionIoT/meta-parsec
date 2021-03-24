@@ -36,5 +36,6 @@ do_install_append () {
     sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=mkdir -m 0700 -p /run/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
     sed -i -e 's,\[Service\],\[Service\]\nRestartSec=5s,g' ${D}${systemd_unitdir}/system/parsec.service
     sed -i -e 's,\[Service\],\[Service\]\nRestart=always,g' ${D}${systemd_unitdir}/system/parsec.service
+    sed -i -e 's,\[Service\],\[Service\]\nUser=parsec,g' ${D}${systemd_unitdir}/system/parsec.service
 
 }
