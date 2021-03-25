@@ -9,7 +9,7 @@ Restart=always
 RestartSec=5s
 WorkingDirectory=/userdata
 ExecStartPre=+mkdir -m 0700 -p /userdata/parsec
-ExecStartPre=+chown parsec:parsec /userdata/parsec
+ExecStartPre=+chown parsec /userdata/parsec
 ExecStart=/usr/bin/swtpm.sh
 ExecStop=/bin/tpm2_shutdown -T mssim
 
