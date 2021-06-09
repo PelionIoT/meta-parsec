@@ -117,8 +117,8 @@ SRC_URI += " \
     crate://crates.io/thiserror/1.0.24 \
     crate://crates.io/threadpool/1.8.1 \
     crate://crates.io/toml/0.5.8 \
-    crate://crates.io/tss-esapi-sys/0.1.0 \
-    crate://crates.io/tss-esapi/5.0.0 \
+    crate://crates.io/tss-esapi-sys/0.1.1 \
+    crate://crates.io/tss-esapi/5.0.1 \
     crate://crates.io/unicode-segmentation/1.7.1 \
     crate://crates.io/unicode-width/0.1.8 \
     crate://crates.io/unicode-xid/0.2.1 \
