@@ -12,7 +12,7 @@ SRC_URI += "crate://crates.io/parsec-service/${PV} \
 
 BPN = "parsec-service"
 
-CARGO_BUILD_FLAGS += "${CARGO_EXTRA_FLAGS}"
+CARGO_BUILD_FLAGS += "${CARGO_EXTRA_FLAGS} --features cryptoki/generate-bindings,tss-esapi/generate-bindings"
 
 INITSCRIPT_NAME = "parsec"
 INITSCRIPT_PARAMS = "defaults"
