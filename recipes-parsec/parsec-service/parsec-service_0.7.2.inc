@@ -1,3 +1,5 @@
+# This file is created from parsec-service repository Cargo.lock using cargo-bitbake tool
+
 SRC_URI += " \
     crate://crates.io/aho-corasick/0.7.15 \
     crate://crates.io/ansi_term/0.11.0 \
@@ -21,8 +23,8 @@ SRC_URI += " \
     crate://crates.io/clap/2.33.3 \
     crate://crates.io/cmake/0.1.45 \
     crate://crates.io/cryptoauthlib-sys/0.1.0 \
-    crate://crates.io/cryptoki-sys/0.1.0 \
-    crate://crates.io/cryptoki/0.1.0 \
+    crate://crates.io/cryptoki-sys/0.1.1 \
+    crate://crates.io/cryptoki/0.1.1 \
     crate://crates.io/derivative/2.2.0 \
     crate://crates.io/either/1.6.1 \
     crate://crates.io/enumflags2/0.6.4 \
@@ -137,6 +139,7 @@ SRC_URI += " \
     crate://crates.io/winapi/0.3.9 \
     crate://crates.io/zeroize/1.2.0 \
     crate://crates.io/zeroize_derive/1.0.1 \
+    file://cryptoki.patch \
 "
 
 LIC_FILES_CHKSUM = " \
