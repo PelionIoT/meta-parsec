@@ -12,7 +12,7 @@ SRC_URI += "crate://crates.io/parsec-service/${PV} \
 
 BPN = "parsec-service"
 
-CARGO_BUILD_FLAGS += "${CARGO_EXTRA_FLAGS}"
+CARGO_BUILD_FLAGS += "${CARGO_EXTRA_FLAGS} --features cryptoki/generate-bindings,tss-esapi/generate-bindings"
 
 INITSCRIPT_NAME = "parsec"
 INITSCRIPT_PARAMS = "defaults"
@@ -33,7 +33,7 @@ do_install_append () {
     install -m 0644 ${S}/systemd-daemon/parsec.service ${D}${systemd_unitdir}/system
 
     sed -i -e 's,WorkingDirectory=/home/parsec/,WorkingDirectory=/userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
-    sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=mkdir -m 0700 -p /run/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
+    sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=mkdir -m 0750 -p /run/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
     sed -i -e 's,\[Service\],\[Service\]\nRestartSec=5s,g' ${D}${systemd_unitdir}/system/parsec.service
     sed -i -e 's,\[Service\],\[Service\]\nRestart=always,g' ${D}${systemd_unitdir}/system/parsec.service
     sed -i -e 's,\[Service\],\[Service\]\nUser=parsec,g' ${D}${systemd_unitdir}/system/parsec.service
