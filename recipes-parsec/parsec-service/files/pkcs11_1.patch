@@ -1,0 +1,26 @@
+diff --git a/src/providers/pkcs11/key_management.rs b/src/providers/pkcs11/key_management.rs
+index 6bc5e06..47d2f1a 100644
+--- a/src/providers/pkcs11/key_management.rs
++++ b/src/providers/pkcs11/key_management.rs
+@@ -121,6 +121,8 @@ impl Provider {
+ 
+         let mech = match key_attributes.key_type {
+             Type::RsaKeyPair => {
++                pub_template.push(Attribute::Class(ObjectClass::PUBLIC_KEY));
++                priv_template.push(Attribute::Class(ObjectClass::PRIVATE_KEY));
+                 pub_template.push(Attribute::Private(false.into()));
+                 pub_template.push(Attribute::PublicExponent(utils::PUBLIC_EXPONENT.into()));
+                 pub_template.push(Attribute::ModulusBits(
+diff --git a/src/providers/pkcs11/utils.rs b/src/providers/pkcs11/utils.rs
+index e83b522..e55c430 100644
+--- a/src/providers/pkcs11/utils.rs
++++ b/src/providers/pkcs11/utils.rs
+@@ -90,7 +90,7 @@ pub fn key_pair_usage_flags_to_pkcs11_attributes(
+     priv_template.push(Attribute::Decrypt((usage_flags.decrypt).into()));
+     priv_template.push(Attribute::Derive((usage_flags.derive).into()));
+     priv_template.push(Attribute::Extractable((usage_flags.export).into()));
+-    priv_template.push(Attribute::Sensitive((usage_flags.export).into()));
++    priv_template.push(Attribute::Sensitive((!usage_flags.export).into()));
+     priv_template.push(Attribute::Copyable((usage_flags.copy).into()));
+     pub_template.push(Attribute::Copyable((usage_flags.copy).into()));
+ }

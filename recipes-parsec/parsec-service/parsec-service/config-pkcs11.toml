@@ -14,10 +14,13 @@ auth_type = "UnixPeerCredentials"
 [[key_manager]]
 name = "on-disk-manager"
 manager_type = "OnDisk"
-store_path = "./mappings"
+store_path = "/userdata/parsec/mappings"
 
 [[provider]]
-provider_type = "Tpm"
+provider_type = "Pkcs11"
 key_info_manager = "on-disk-manager"
-tcti = "mssim"
-owner_hierarchy_auth = "hex:74706d5f70617373" # "tpm_pass" in hex
+library_path = "/usr/lib/libsks.so.0"
+
+slot_number = 0
+user_pin = "87654321"
+

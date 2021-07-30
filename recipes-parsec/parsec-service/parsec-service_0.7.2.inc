@@ -140,6 +140,7 @@ SRC_URI += " \
     crate://crates.io/zeroize/1.2.0 \
     crate://crates.io/zeroize_derive/1.0.1 \
     file://cryptoki.patch \
+    file://pkcs11_1.patch \
 "
 
 LIC_FILES_CHKSUM = " \

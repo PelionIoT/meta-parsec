@@ -2,9 +2,10 @@ meta-parsec layer
 ==============
 
 
-This layer contains recipes for the Parsec service with a software TPM provider service.
+This layer contains recipes for the Parsec service with either a software TPM or a PKCS11 provider service.
 
-Password
+
+Software TPM Password
 ============
 
 By default both the parsec and software TPM are configured to use the password **tpm_pass**  
@@ -35,6 +36,22 @@ To restart them:
 1. Start the parsec service  
 ```sudo systemctl start parsec```
 
+PKCS11 Pin
+============
+
+By default both the parsec and PKCS11 are configured to use the pins **12345678** and **87654321**  
+This **MUST** be changed as part of the factory setup process.  
+
+To change this perform the following steps:
+1. Stop the parsec service  
+```sudo systemctl stop parsec```
+1. Change the User pin  
+```sudo pkcs11-tool --module /usr/lib/libsks.so.0 --change-pin 87654321 --new-pin new_user_pin```
+1. Change the Security Officer pin  
+```sudo pkcs11-tool --module /usr/lib/libsks.so.0 --login --login-type so --so-pin 12345678 --change-pin --new-pin new_so_pin```
+1. Edit the parsec configuration file in ```/etc/parsec/config.toml``` and change the user_pin line to your new_user_pin.
+1. Restart the parsec service
+```sudo systemctl start parsec```
 
 
 
@@ -90,14 +107,5 @@ other layers needed. e.g.:
       /path/to/yocto/meta-security/meta-tpm \
       /path/to/yocto/meta-security/meta-parsec \
       "
-
-To include the Parsec service into your image add the following into the
-local.conf:
-
-    IMAGE_INSTALL_append = " parsec-service-tpm"
-    IMAGE_INSTALL_append = " parsec-tool"
-    IMAGE_INSTALL_append = " swtpm-service"
-
-The Parsec service will be deployed into the image with a config file for the software TPM provider.
 
 
