@@ -8,7 +8,7 @@ TOOLCHAIN = "clang"
 
 SRC_URI += "crate://crates.io/parsec-service/${PV} \
             file://config.toml \
-            file://01-tpm.rules \
+            file://tpm-udev.rules \
            "
 
 BPN = "parsec-service"
@@ -21,7 +21,7 @@ SYSTEMD_SERVICE_${PN} = "parsec.service"
 FILES_${PN} = "/usr \
                /usr/bin \
                /etc/parsec/config.toml \
-               /etc/udev/rules.d/01-tpm.rules \
+               /etc/udev/rules.d/tpm-udev.rules \
                "
 
 cargo_do_install_append () {
@@ -35,7 +35,7 @@ do_install_append () {
     install -d ${D}${sysconfdir}/parsec
     install -m 0600 ${WORKDIR}/config.toml ${D}${sysconfdir}/parsec/config.toml
     install -d ${D}${sysconfdir}/udev/rules.d
-    install -m 0644 ${WORKDIR}/01-tpm.rules ${D}${sysconfdir}/udev/rules.d
+    install -m 0644 ${WORKDIR}/tpm-udev.rules ${D}${sysconfdir}/udev/rules.d
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${S}/systemd-daemon/parsec.service ${D}${systemd_unitdir}/system
