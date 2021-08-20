@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# SWTPM startup script, to be called from the systemd service.
+# TPM startup script, to be called from the systemd service.
 
-echo "SWTPM Startup"
+echo "TPM Startup"
 
 cd /userdata/parsec
 
@@ -15,10 +15,10 @@ if [ ! -f .HWTPM_Initialised ]; then
     date > ./.HWTPM_Initialised
 else
     echo "HWTPM_Initialised found"
-    set -x
-    /bin/tpm2_startup -T device:/dev/tpm0
-    set +x
+    #set -x
+    #/bin/tpm2_startup -T device:/dev/tpm0
+    #set +x
 fi
 
-echo "SWTPM Startup Complete"
+echo "TPM Startup Complete"
 
