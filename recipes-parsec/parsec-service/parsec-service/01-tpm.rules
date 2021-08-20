@@ -1,3 +1,0 @@
-SUBSYSTEM=="tpm", TAG+="systemd", MODE="0660", OWNER="root" GROUP="parsec"
-SUBSYSTEM=="tpmrm", TAG+="systemd", MODE="0660", OWNER="root" GROUP="parsec"
-
