@@ -250,7 +250,6 @@ SRC_URI += " \
     crate://crates.io/zeroize_derive/1.1.0 \
     git://github.com/ionut-arm/rust-tss-esapi;protocol=https;nobranch=1;name=tss-esapi-sys;destsuffix=tss-esapi-sys \
     git://github.com/ionut-arm/rust-tss-esapi;protocol=https;nobranch=1;name=tss-esapi;destsuffix=tss-esapi \
-    file://tpm.patch \
 "
 
 SRCREV_FORMAT .= "_tss-esapi"
