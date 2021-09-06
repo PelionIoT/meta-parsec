@@ -7,7 +7,7 @@ inherit cargo update-rc.d systemd
 TOOLCHAIN = "clang"
 
 SRC_URI += "crate://crates.io/parsec-service/${PV} \
-            file://config-hardware-tpm.toml \
+            file://config.toml \
             file://tpm-udev.rules \
            "
 
