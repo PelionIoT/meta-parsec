@@ -7,13 +7,15 @@ inherit cargo update-rc.d systemd
 TOOLCHAIN = "clang"
 
 SRC_URI += "crate://crates.io/parsec-service/${PV} \
-            file://config.toml \
+            file://config-hardware-tpm.toml \
             file://tpm-udev.rules \
            "
 
 BPN = "parsec-service"
 
-CARGO_BUILD_FLAGS += "${CARGO_EXTRA_FLAGS} --features cryptoki/generate-bindings,tss-esapi/generate-bindings"
+CARGO_BUILD_FLAGS += "${CARGO_EXTRA_FLAGS} --features cryptoki/generate-bindings \
+                      --features tss-esapi/generate-bindings \
+                     "
 
 INITSCRIPT_NAME = "parsec"
 INITSCRIPT_PARAMS = "defaults"
@@ -33,7 +35,7 @@ cargo_do_install_append () {
 do_install_append () {
 
     install -d ${D}${sysconfdir}/parsec
-    install -m 0600 ${WORKDIR}/config.toml ${D}${sysconfdir}/parsec/config.toml
+    install -m 0600 ${WORKDIR}/config-hardware-tpm.toml ${D}${sysconfdir}/parsec/config.toml
     install -d ${D}${sysconfdir}/udev/rules.d
     install -m 0644 ${WORKDIR}/tpm-udev.rules ${D}${sysconfdir}/udev/rules.d
 
@@ -45,7 +47,6 @@ do_install_append () {
 
     sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+chown parsec /userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
     sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+mkdir -m 0700 -p /userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
-
     sed -i -e 's,\[Service\],\[Service\]\nRestartSec=5s,g' ${D}${systemd_unitdir}/system/parsec.service
     sed -i -e 's,\[Service\],\[Service\]\nRestart=always,g' ${D}${systemd_unitdir}/system/parsec.service
     sed -i -e 's,\[Service\],\[Service\]\nUser=parsec,g' ${D}${systemd_unitdir}/system/parsec.service
