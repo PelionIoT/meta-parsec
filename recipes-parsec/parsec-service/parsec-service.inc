@@ -35,7 +35,7 @@ cargo_do_install_append () {
 do_install_append () {
 
     install -d ${D}${sysconfdir}/parsec
-    install -m 0600 ${WORKDIR}/config-hardware-tpm.toml ${D}${sysconfdir}/parsec/config.toml
+    install -m 0600 ${WORKDIR}/config-tpm.toml ${D}${sysconfdir}/parsec/config.toml
     install -d ${D}${sysconfdir}/udev/rules.d
     install -m 0644 ${WORKDIR}/tpm-udev.rules ${D}${sysconfdir}/udev/rules.d
 
