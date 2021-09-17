@@ -7,7 +7,9 @@ inherit cargo update-rc.d systemd
 TOOLCHAIN = "clang"
 
 SRC_URI += "crate://crates.io/parsec-service/${PV} \
-            ${@bb.utils.contains('PARSEC_PROVIDER','SOFTWARE_TPM','file://config-tpm.toml','',d)} \
+            ${@bb.utils.contains('PARSEC_PROVIDER','SOFTWARE_TPM','file://config-software-tpm.toml','',d)} \
+            ${@bb.utils.contains('PARSEC_PROVIDER','HARDWARE_TPM','file://config-hardware-tpm.toml','',d)} \
+            ${@bb.utils.contains('PARSEC_PROVIDER','HARDWARE_TPM','file://tpm-udev.rules','',d)} \
             ${@bb.utils.contains('PARSEC_PROVIDER','PKCS11','file://config-pkcs11.toml','',d)} \
             ${@bb.utils.contains('PARSEC_PROVIDER','PKCS11','file://init_pkcs11_slots.sh','',d)} \
             ${@bb.utils.contains('PARSEC_PROVIDER','PKCS11','file://01-tee.rules','',d)} \
@@ -15,7 +17,10 @@ SRC_URI += "crate://crates.io/parsec-service/${PV} \
 
 BPN = "parsec-service"
 
-CARGO_BUILD_FLAGS += "${CARGO_EXTRA_FLAGS} --features cryptoki/generate-bindings,tss-esapi/generate-bindings"
+CARGO_BUILD_FLAGS += "${CARGO_EXTRA_FLAGS} --features cryptoki/generate-bindings \
+                      ${@bb.utils.contains('PARSEC_PROVIDER','SOFTWARE_TPM','--features tss-esapi/generate-bindings','',d)} \
+                      ${@bb.utils.contains('PARSEC_PROVIDER','HARDWARE_TPM','--features tss-esapi/generate-bindings','',d)} \
+                     "
 
 INITSCRIPT_NAME = "parsec"
 INITSCRIPT_PARAMS = "defaults"
@@ -24,6 +29,7 @@ FILES_${PN} = "/usr \
                /usr/bin \
                /etc/parsec/config.toml \
                ${@bb.utils.contains('PARSEC_PROVIDER','PKCS11','/etc/udev/rules.d/01-tee.rules','',d)} \
+               ${@bb.utils.contains('PARSEC_PROVIDER','HARDWARE_TPM','/etc/udev/rules.d/tpm-udev.rules','',d)} \
                "
 
 cargo_do_install_append () {
@@ -36,7 +42,14 @@ do_install_append () {
 
     if [ "${PARSEC_PROVIDER}" = "SOFTWARE_TPM" ]; then
         install -d ${D}${sysconfdir}/parsec
-        install -m 0600 ${WORKDIR}/config-tpm.toml ${D}${sysconfdir}/parsec/config.toml
+        install -m 0600 ${WORKDIR}/config-software-tpm.toml ${D}${sysconfdir}/parsec/config.toml
+    fi
+
+    if [ "${PARSEC_PROVIDER}" = "HARDWARE_TPM" ]; then
+        install -d ${D}${sysconfdir}/parsec
+        install -m 0600 ${WORKDIR}/config-hardware-tpm.toml ${D}${sysconfdir}/parsec/config.toml
+        install -d ${D}${sysconfdir}/udev/rules.d
+        install -m 0644 ${WORKDIR}/tpm-udev.rules ${D}${sysconfdir}/udev/rules.d
     fi
 
     if [ "${PARSEC_PROVIDER}" = "PKCS11" ]; then
@@ -55,10 +68,15 @@ do_install_append () {
 
     sed -i -e 's,WorkingDirectory=/home/parsec/,WorkingDirectory=/userdata,g' ${D}${systemd_unitdir}/system/parsec.service
     sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=mkdir -m 0750 -p /run/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
+
     if [ "${PARSEC_PROVIDER}" = "PKCS11" ]; then
         sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+chown parsec /userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
         sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+mkdir -m 0700 -p /userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
         sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+/usr/bin/init_pkcs11_slots.sh,g' ${D}${systemd_unitdir}/system/parsec.service
+    fi
+    if [ "${PARSEC_PROVIDER}" = "HARDWARE_TPM" ]; then
+        sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+chown parsec /userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
+        sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+mkdir -m 0700 -p /userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
     fi
     sed -i -e 's,\[Service\],\[Service\]\nRestartSec=5s,g' ${D}${systemd_unitdir}/system/parsec.service
     sed -i -e 's,\[Service\],\[Service\]\nRestart=always,g' ${D}${systemd_unitdir}/system/parsec.service
