@@ -63,6 +63,7 @@ SRC_URI += " \
     crate://crates.io/grpcio-compiler/0.7.0 \
     crate://crates.io/grpcio-sys/0.9.0+1.38.0 \
     crate://crates.io/grpcio/0.9.0 \
+    crate://crates.io/hamming/0.1.3 \
     crate://crates.io/hashbrown/0.9.1 \
     crate://crates.io/heck/0.3.3 \
     crate://crates.io/hermit-abi/0.1.18 \
@@ -123,6 +124,11 @@ SRC_URI += " \
     crate://crates.io/pkcs8/0.7.0 \
     crate://crates.io/pkg-config/0.3.19 \
     crate://crates.io/ppv-lite86/0.2.10 \
+    crate://crates.io/primal-bit/0.3.0 \
+    crate://crates.io/primal-check/0.3.1 \
+    crate://crates.io/primal-estimate/0.3.1 \
+    crate://crates.io/primal-sieve/0.3.1 \
+    crate://crates.io/primal/0.3.0 \
     crate://crates.io/proc-macro-error-attr/1.0.4 \
     crate://crates.io/proc-macro-error/1.0.4 \
     crate://crates.io/proc-macro-hack/0.5.19 \
@@ -199,7 +205,7 @@ SRC_URI += " \
     crate://crates.io/tinyvec_macros/0.1.0 \
     crate://crates.io/toml/0.5.8 \
     crate://crates.io/tss-esapi-sys/0.2.0 \
-    crate://crates.io/tss-esapi/6.1.0 \
+    crate://crates.io/tss-esapi/7.0.0-alpha.1 \
     crate://crates.io/typenum/1.13.0 \
     crate://crates.io/unicode-bidi/0.3.5 \
     crate://crates.io/unicode-normalization/0.1.19 \
