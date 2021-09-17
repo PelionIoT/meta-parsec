@@ -1,0 +1,1 @@
+SUBSYSTEM=="tee", MODE="0660", OWNER="root", GROUP="parsec" TAG+="systemd", ENV{SYSTEMD_WANTS}+="tee-supplicant.service"
