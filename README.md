@@ -2,7 +2,7 @@ meta-parsec layer
 ==============
 
 
-This layer contains recipes for the Parsec service with either a software TPM or a PKCS11 provider service.
+This layer contains recipes for the Parsec service with either a software TPM or a hardware TPM or a PKCS11 provider service.
 
 
 Software TPM Password
@@ -34,6 +34,20 @@ To restart them:
 1. Start the swtpm service  
 ```sudo systemctl start swtpm```
 1. Start the parsec service  
+```sudo systemctl start parsec```
+
+Hardware TPM Password
+============
+
+By default parsec and hardware TPM are configured to use an empty password  
+
+To change this perform the following steps:
+1. Stop the parsec service  
+```sudo systemctl stop parsec```
+1. Change the owner_hierarchy_auth  
+```sudo tpm2_changeauth -c owner new_pass```
+1. Edit the parsec configuration file in ```/etc/parsec/config.toml``` and change the owner_hierarchy_auth line to your new_pass.
+1. Restart the parsec service
 ```sudo systemctl start parsec```
 
 PKCS11 Pin
@@ -105,7 +119,7 @@ other layers needed. e.g.:
       /path/to/yocto/meta-rust \
       /path/to/yocto/meta-clang \
       /path/to/yocto/meta-security/meta-tpm \
-      /path/to/yocto/meta-security/meta-parsec \
+      /path/to/yocto/meta-parsec \
       "
 
 

@@ -19,5 +19,5 @@ store_path = "/userdata/parsec/mappings"
 [[provider]]
 provider_type = "Tpm"
 key_info_manager = "on-disk-manager"
-tcti = "device:/dev/tpm0"
-owner_hierarchy_auth = "hex:74706d5f70617373" # "tpm_pass" in hex
+tcti = "device:/dev/tpmrm0"
+owner_hierarchy_auth = ""
