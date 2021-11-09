@@ -10,13 +10,10 @@ This layer contains recipes for the Parsec service with either a hardware TPM or
 By default parsec and hardware TPM are configured to use an empty password  
 
 To change this perform the following steps:
-1. Stop the parsec service  
-```sudo systemctl stop parsec```
-1. Change the owner_hierarchy_auth  
-```sudo tpm2_changeauth -c owner new_pass```
+1. Stop the parsec service `sudo systemctl stop parsec`
+1. Change the owner_hierarchy_auth `sudo tpm2_changeauth -c owner new_pass`
 1. Edit the parsec configuration file in ```/etc/parsec/config.toml``` and change the owner_hierarchy_auth line to your new_pass.
-1. Restart the parsec service
-```sudo systemctl start parsec```
+1. Restart the parsec service `sudo systemctl start parsec`
 
 ## PKCS11 Provider
 
@@ -24,10 +21,10 @@ There are two different possible PKCS11 providers that use different technologie
 
 - uses the OPTEE trusted application.  
   - This is used when **PARSEC_PROVIDER** is set to **PKCS11**  
-  - To use this the library to be used is ```/usr/lib/libsks.so.0```  
+  - To use this the library to be used is `/usr/lib/libsks.so.0`  
 - uses a software HSM.  
   - This is used when **PARSEC_PROVIDER** is set to **SOFTHSM**  
-  - To use this the library to be used is ```/usr/lib/softhsm/libsofthsm2.so```  
+  - To use this the library to be used is `/usr/lib/softhsm/libsofthsm2.so`  
 
 
 ### PKCS11 Pin
@@ -37,20 +34,18 @@ This **MUST** be changed as part of the factory setup process.
 
 To change this perform the following steps:
 1. Use the appropriate library file depending on the **PARSEC_PROVIDER** as described above
-1. Stop the parsec service  
-```sudo systemctl stop parsec```
+1. Stop the parsec service `sudo systemctl stop parsec`
 1. Change the User pin  
-   - ```sudo pkcs11-tool --module /usr/lib/libsks.so.0 --change-pin --pin 87654321 --new-pin new_user_pin```  
+   - `sudo pkcs11-tool --module /usr/lib/libsks.so.0 --change-pin --pin 87654321 --new-pin new_user_pin`  
    OR  
-   - ```sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --change-pin --pin 87654321 --new-pin new_user_pin```
+   - `sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --change-pin --pin 87654321 --new-pin new_user_pin`
 
 1. Change the Security Officer pin  
-   - ```sudo pkcs11-tool --module /usr/lib/libsks.so.0 --login --login-type so --so-pin 12345678 --change-pin --new-pin new_so_pin```  
+   - `sudo pkcs11-tool --module /usr/lib/libsks.so.0 --login --login-type so --so-pin 12345678 --change-pin --new-pin new_so_pin`  
    OR  
-   - ```sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --login --login-type so --so-pin 12345678 --change-pin --new-pin new_so_pin```
+   - `sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --login --login-type so --so-pin 12345678 --change-pin --new-pin new_so_pin`
 1. Edit the parsec configuration file in ```/etc/parsec/config.toml``` and change the user_pin line to your new_user_pin.
-1. Restart the parsec service
-```sudo systemctl start parsec```
+1. Restart the parsec service `sudo systemctl start parsec`
 
 
 ## Software TPM Provider
@@ -61,29 +56,22 @@ By default both the parsec and software TPM are configured to use the password *
 This **MUST** be changed as part of the factory setup process.  
 
 To change this perform the following steps:
-1. Stop the parsec service  
-```sudo systemctl stop parsec```
-1. Change the owner_hierarchy_auth  
-```sudo tpm2_changeauth -c -p tpm_pass new_auth_pass```
+1. Stop the parsec service `sudo systemctl stop parsec`
+1. Change the owner_hierarchy_auth `sudo tpm2_changeauth -c -p tpm_pass new_auth_pass`
 1. Edit the parsec configuration file in ```/etc/parsec/config.toml``` and change the owner_hierarchy_auth line to your new_auth_pass.
-1. Restart the parsec service
-```sudo systemctl start parsec```
+1. Restart the parsec service `sudo systemctl start parsec`
 
 ### Stopping and restarting the Services
 
 The services must be shutdown in the correct order.
 
-1. Stop the parsec service  
-```sudo systemctl stop parsec```
-1. Stop the swtpm service  
-```sudo systemctl stop swtpm```
+1. Stop the parsec service `sudo systemctl stop parsec`
+1. Stop the swtpm service `sudo systemctl stop swtpm`
 
 To restart them:
 
-1. Start the swtpm service  
-```sudo systemctl start swtpm```
-1. Start the parsec service  
-```sudo systemctl start parsec```
+1. Start the swtpm service `sudo systemctl start swtpm`
+1. Start the parsec service `sudo systemctl start parsec`
 
 
 
