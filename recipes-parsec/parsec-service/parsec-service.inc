@@ -13,6 +13,8 @@ SRC_URI += "crate://crates.io/parsec-service/${PV} \
             ${@bb.utils.contains('PARSEC_PROVIDER','PKCS11','file://config-pkcs11.toml','',d)} \
             ${@bb.utils.contains('PARSEC_PROVIDER','PKCS11','file://init_pkcs11_slots.sh','',d)} \
             ${@bb.utils.contains('PARSEC_PROVIDER','PKCS11','file://01-tee.rules','',d)} \
+            ${@bb.utils.contains('PARSEC_PROVIDER','SOFTHSM','file://config-softhsm.toml','',d)} \
+            ${@bb.utils.contains('PARSEC_PROVIDER','SOFTHSM','file://init_pkcs11_slots.sh','',d)} \
            "
 
 BPN = "parsec-service"
@@ -63,6 +65,15 @@ do_install_append () {
         install -m 0644 ${WORKDIR}/01-tee.rules ${D}${sysconfdir}/udev/rules.d
     fi
 
+    if [ "${PARSEC_PROVIDER}" = "SOFTHSM" ]; then
+        install -d ${D}${sysconfdir}/parsec
+        install -m 0600 ${WORKDIR}/config-softhsm.toml ${D}${sysconfdir}/parsec/config.toml
+
+        install -d ${D}${bindir}
+        install -m 0700 ${WORKDIR}/init_pkcs11_slots.sh ${D}${bindir}/init_pkcs11_slots.sh
+
+    fi
+
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${S}/systemd-daemon/parsec.service ${D}${systemd_unitdir}/system
 
@@ -73,6 +84,11 @@ do_install_append () {
         sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+chown parsec /userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
         sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+mkdir -m 0700 -p /userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
         sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+/usr/bin/init_pkcs11_slots.sh,g' ${D}${systemd_unitdir}/system/parsec.service
+    fi
+    if [ "${PARSEC_PROVIDER}" = "SOFTHSM" ]; then
+        sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+chown parsec /userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
+        sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+mkdir -m 0700 -p /userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
+        sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=/usr/bin/init_pkcs11_slots.sh,g' ${D}${systemd_unitdir}/system/parsec.service
     fi
     if [ "${PARSEC_PROVIDER}" = "HARDWARE_TPM" ]; then
         sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+chown parsec /userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
