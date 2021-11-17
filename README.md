@@ -38,13 +38,13 @@ To change this perform the following steps:
 1. Use the appropriate library file depending on the **PARSEC_PROVIDER** as described above
 1. Stop the parsec service `sudo systemctl stop parsec`
 1. Change the User pin:
-   - `sudo pkcs11-tool --module /usr/lib/libsks.so.0 --change-pin --pin 87654321 --new-pin new_user_pin`
-   OR
+   - `sudo pkcs11-tool --module /usr/lib/libsks.so.0 --change-pin --pin 87654321 --new-pin new_user_pin`  
+   OR  
    - `sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --change-pin --pin 87654321 --new-pin new_user_pin`
 
 1. Change the Security Officer pin:
-   - `sudo pkcs11-tool --module /usr/lib/libsks.so.0 --login --login-type so --so-pin 12345678 --change-pin --new-pin new_so_pin`
-   OR
+   - `sudo pkcs11-tool --module /usr/lib/libsks.so.0 --login --login-type so --so-pin 12345678 --change-pin --new-pin new_so_pin`  
+   OR  
    - `sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --login --login-type so --so-pin 12345678 --change-pin --new-pin new_so_pin`
 1. Edit the parsec configuration file in `/etc/parsec/config.toml` and change the user_pin line to your new_user_pin.
 1. Restart the parsec service `sudo systemctl start parsec`.
