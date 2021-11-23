@@ -10,6 +10,7 @@ timeout = 3000 # in milliseconds
 
 [authenticator]
 auth_type = "UnixPeerCredentials"
+admins = [ { name = "0"} ]
 
 [[key_manager]]
 name = "on-disk-manager"
