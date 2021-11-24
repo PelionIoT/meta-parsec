@@ -7,7 +7,6 @@ inherit cargo update-rc.d systemd
 TOOLCHAIN = "clang"
 
 SRC_URI += "crate://crates.io/parsec-service/${PV} \
-            ${@bb.utils.contains('PARSEC_PROVIDER','SOFTWARE_TPM','file://config-software-tpm.toml','',d)} \
             ${@bb.utils.contains('PARSEC_PROVIDER','HARDWARE_TPM','file://config-hardware-tpm.toml','',d)} \
             ${@bb.utils.contains('PARSEC_PROVIDER','HARDWARE_TPM','file://tpm-udev.rules','',d)} \
             ${@bb.utils.contains('PARSEC_PROVIDER','PKCS11','file://config-pkcs11.toml','',d)} \
@@ -20,7 +19,6 @@ SRC_URI += "crate://crates.io/parsec-service/${PV} \
 BPN = "parsec-service"
 
 CARGO_BUILD_FLAGS += "${CARGO_EXTRA_FLAGS} --features cryptoki/generate-bindings \
-                      ${@bb.utils.contains('PARSEC_PROVIDER','SOFTWARE_TPM','--features tss-esapi/generate-bindings','',d)} \
                       ${@bb.utils.contains('PARSEC_PROVIDER','HARDWARE_TPM','--features tss-esapi/generate-bindings','',d)} \
                      "
 
@@ -41,11 +39,6 @@ cargo_do_install_append () {
 }
 
 do_install_append () {
-
-    if [ "${PARSEC_PROVIDER}" = "SOFTWARE_TPM" ]; then
-        install -d ${D}${sysconfdir}/parsec
-        install -m 0600 ${WORKDIR}/config-software-tpm.toml ${D}${sysconfdir}/parsec/config.toml
-    fi
 
     if [ "${PARSEC_PROVIDER}" = "HARDWARE_TPM" ]; then
         install -d ${D}${sysconfdir}/parsec

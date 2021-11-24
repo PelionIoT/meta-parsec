@@ -1,7 +1,7 @@
 # meta-parsec layer
 
 
-This layer contains recipes for the Parsec service with either a hardware TPM or a software TPM or a PKCS11 provider service.
+This layer contains recipes for the Parsec service with either a hardware TPM or a PKCS11 provider service.
 
 ## Hardware TPM Provider
 
@@ -47,33 +47,6 @@ To change this perform the following steps:
    - `sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --login --login-type so --so-pin 12345678 --change-pin --new-pin new_so_pin`
 1. Edit the Parsec configuration file in `/etc/parsec/config.toml` and change the user_pin line to your new_user_pin.
 1. Restart the Parsec service `sudo systemctl start parsec`.
-
-## Software TPM Provider
-
-### Software TPM Password
-
-By default both the Parsec and software TPM are configured to use the password **tpm_pass**.
-This **MUST** be changed as part of the factory setup process.
-
-To change this perform the following steps:
-
-1. Stop the Parsec service `sudo systemctl stop parsec`.
-1. Change the owner_hierarchy_auth `sudo tpm2_changeauth -c -p tpm_pass new_auth_pass`.
-1. Edit the Parsec configuration file in `/etc/parsec/config.toml` and change the owner_hierarchy_auth line to your new_auth_pass.
-1. Restart the Parsec service `sudo systemctl start parsec`.
-
-### Stopping and restarting the Services
-
-The services must be shutdown in the correct order.
-
-1. Stop the Parsec service `sudo systemctl stop parsec`.
-1. Stop the SW TPM service `sudo systemctl stop swtpm`.
-
-To restart them:
-
-1. Start the SW TPM service `sudo systemctl start swtpm`.
-1. Start the Parsec service `sudo systemctl start parsec`.
-
 
 ## Dependencies
 
