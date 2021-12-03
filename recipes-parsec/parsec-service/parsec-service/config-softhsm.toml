@@ -1,0 +1,27 @@
+[core_settings]
+log_level = "trace"
+log_error_details = true
+
+[listener]
+listener_type = "DomainSocket"
+# The timeout needs to be smaller than the test client timeout (five seconds) as it is testing
+# that the service does not hang for very big values of body or authentication length.
+timeout = 3000 # in milliseconds
+
+[authenticator]
+auth_type = "UnixPeerCredentials"
+admins = [ { name = "0"} ]
+
+[[key_manager]]
+name = "on-disk-manager"
+manager_type = "OnDisk"
+store_path = "/userdata/parsec/mappings"
+
+[[provider]]
+provider_type = "Pkcs11"
+key_info_manager = "on-disk-manager"
+library_path = "/usr/lib/softhsm/libsofthsm2.so"
+
+slot_number = 0
+user_pin = "87654321"
+

@@ -18,7 +18,7 @@ SYSTEMD_SERVICE_${PN} = "swtpm.service"
 
 do_install_append () {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0600 ${WORKDIR}/swtpm.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${WORKDIR}/swtpm.service ${D}${systemd_unitdir}/system
     install -d ${D}${bindir}
     install -m 0700 ${WORKDIR}/swtpm.sh ${D}${bindir}/swtpm.sh
 }
