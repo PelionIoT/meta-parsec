@@ -1,7 +1,7 @@
 # meta-parsec layer
 
 
-This layer contains recipes for the Parsec service with either a hardware TPM or a PKCS11 provider service.
+This layer contains recipes for the Parsec service with either a hardware TPM or a PKCS#11 provider service.
 
 ## Hardware TPM Provider
 
