@@ -86,3 +86,38 @@ other layers needed. e.g.:
       /path/to/yocto/meta-parsec \
       "
 ```
+
+## Moving to a newer version of Parsec
+
+To move to a newer version of Parsec it is necessary to rename some files and generate a new list of crates.
+For example, to move from version 0.8.1 to version 1.0.0, rename files:
+```
+cd recipes-parsec/parsec-service
+git mv parsec-service-softhsm_0.8.1.bb parsec-service-softhsm_1.0.0.bb 
+git mv parsec-service-tpm_0.8.1.bb parsec-service-tpm_1.0.0.bb 
+git mv parsec-service-pkcs11_0.8.1.bb parsec-service-pkcs11_1.0.0.bb 
+git mv parsec-service_0.8.1.inc parsec-service_1.0.0.inc
+cd ../..
+```
+
+Generate the new crates list:
+```
+git clone  https://github.com/parallaxsecond/parsec
+cd parsec
+git checkout -b tags/1.0.0
+cargo bitbake
+```
+
+This will generate `parsec-service_1.0.0.bb` which needs to be tweaked slightly.
+- Remove the lines between the `Auto generated` comment and the `SRC_URI`
+- Remove the lines from the `SUMMARY` to the end of the file.
+
+Now move and rename it.
+
+`mv parsec-service_1.0.0.bb ../recipes-parsec/parsec-service/parsec-service_1.0.0.inc`
+
+Cleanup:
+```
+cd ..
+rm -rf parsec
+```

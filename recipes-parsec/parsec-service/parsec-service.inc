@@ -79,9 +79,10 @@ do_install_append () {
         sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+/usr/bin/init_pkcs11_slots.sh,g' ${D}${systemd_unitdir}/system/parsec.service
     fi
     if [ "${PARSEC_PROVIDER}" = "SOFTHSM" ]; then
+        sed -i -e 's,etc,userdata,g' ${D}${systemd_unitdir}/system/parsec.service
+        sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=/usr/bin/init_pkcs11_slots.sh,g' ${D}${systemd_unitdir}/system/parsec.service
         sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+chown parsec /userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
         sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+mkdir -m 0700 -p /userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
-        sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=/usr/bin/init_pkcs11_slots.sh,g' ${D}${systemd_unitdir}/system/parsec.service
     fi
     if [ "${PARSEC_PROVIDER}" = "HARDWARE_TPM" ]; then
         sed -i -e 's,\[Service\],\[Service\]\nExecStartPre=+chown parsec /userdata/parsec,g' ${D}${systemd_unitdir}/system/parsec.service
