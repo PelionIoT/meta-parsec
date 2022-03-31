@@ -16,9 +16,9 @@ To change this perform the following steps:
 1. Edit the Parsec configuration file in `/etc/parsec/config.toml` and change the owner_hierarchy_auth line to your new_pass.
 1. Restart the Parsec service `sudo systemctl start parsec`.
 
-## PKCS11 Provider
+## PKCS#11 Provider
 
-There are two different possible PKCS11 providers that use different technologies to store secrets. Parsec configuration file in `/etc/parsec/config.toml` selects the provider by selecting a library file.
+There are two different possible PKCS#11 providers that use different technologies to store secrets. Parsec configuration file in `/etc/parsec/config.toml` selects the provider by selecting a library file.
 
 - Uses the OP-TEE trusted application.
   - This is used when **PARSEC_PROVIDER** is set to **PKCS11**.
@@ -27,9 +27,9 @@ There are two different possible PKCS11 providers that use different technologie
   - This is used when **PARSEC_PROVIDER** is set to **SOFTHSM**.
   - To use this the library to be used is `/usr/lib/softhsm/libsofthsm2.so`.
 
-### PKCS11 Pin
+### PKCS#11 Pin
 
-By default both the Parsec and PKCS11 are configured to use the pins **12345678** and **87654321**.
+By default both the Parsec and PKCS#11 are configured to use the pins **12345678** and **87654321**.
 This **MUST** be changed as part of the factory setup process.
 
 To change this perform the following steps:
